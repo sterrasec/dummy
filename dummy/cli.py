@@ -11,6 +11,13 @@ from PIL import Image, ImageDraw, ImageFont
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import B5
 
+
+def make_jpeg(file_path, text):
+    image = Image.new('RGB', (729, 516), (255, 255, 255)) # B5, White
+    draw = ImageDraw.Draw(image)
+    draw.text((10, 10), text, fill=(0, 0, 0)) # Black
+    image.save(file_path, format='jpeg')
+
 def make_png(file_path, text, byte_size):
     image = Image.new('RGB', (729, 516), (255, 255, 255)) # B5, White
     draw = ImageDraw.Draw(image)
@@ -59,12 +66,12 @@ def make_pdf(file_path, text):
 def parse_args():
     colorama.init(autoreset=True)
     parser = argparse.ArgumentParser(description='Create a dummy file of the specified size.')
-    parser.add_argument('-n', '--name', help='File name(.png, .pdf)', required=True)
+    parser.add_argument('-n', '--name', help='File name(.jpeg, .png, .pdf)', required=True)
     parser.add_argument('-t', '--text', help='Text to be written in the file')
-    parser.add_argument('-s', '--size', help='Bytes of file(png only)', type=int)
+    parser.add_argument('-s', '--size', help='Bytes of file(.png only)')
     args = parser.parse_args()
     # if args.name.endswith('.png'):
 
 if __name__ == '__main__':
     colorama.init(autoreset=True)
-    make_pdf('dummy.pdf', 'sample pdf')
+    make_jpeg('dummy.jpeg', 'sample text')
