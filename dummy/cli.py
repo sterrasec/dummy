@@ -26,7 +26,7 @@ def make_png(file_path, text, byte_size):
     image.save(output, format='png')
     png_data = output.getvalue()
 
-    if len(png_data) > byte_size:
+    if (byte_size == None) or (len(png_data) > byte_size):
         with open(file_path, 'wb') as f:
             f.write(png_data)
         return False
@@ -63,15 +63,35 @@ def make_pdf(file_path, text):
     c.showPage()
     c.save()
 
+def parse_bytes(byte_str):
+    if byte_str == None:
+        return None
+
+    if byte_str.endswith(('B', 'b')):
+        return int(byte_str[:-1])
+    elif byte_str.endswith(('KB', 'Kb', 'kB', 'kb')):
+        return int(byte_str[:-2]) * 1024
+    elif byte_str.endswith(('MB', 'Mb', 'mB', 'mb')):
+        return int(byte_str[:-2]) * 1024 * 1024
+    elif byte_str.endswith(('GB', 'Gb', 'gB', 'gb')):
+        return int(byte_str[:-2]) * 1024 * 1024 * 1024
+    else:
+        return int(byte_str)
+
 def parse_args():
     colorama.init(autoreset=True)
-    parser = argparse.ArgumentParser(description='Create a dummy file of the specified size.')
+    parser = argparse.ArgumentParser(description='Create a dummy file for testing.')
     parser.add_argument('-n', '--name', help='File name(.jpeg, .png, .pdf)', required=True)
-    parser.add_argument('-t', '--text', help='Text to be written in the file')
-    parser.add_argument('-s', '--size', help='Bytes of file(.png only)')
-    args = parser.parse_args()
-    # if args.name.endswith('.png'):
+    parser.add_argument('-t', '--text', help='Text to be written in the file', default='dummy file')
+    parser.add_argument('-b', '--bytes', help='Bytes of file(.png only)')
 
-if __name__ == '__main__':
-    colorama.init(autoreset=True)
-    make_jpeg('dummy.jpeg', 'sample text')
+    args = parser.parse_args()
+    if args.name.endswith('.jpeg'):
+        make_jpeg(args.name, args.text)
+    elif args.name.endswith('.png'):
+        make_png(args.name, args.text, parse_bytes(args.bytes))
+    elif args.name.endswith('.pdf'):
+        make_pdf(args.name, args.text)
+    else:
+        print(Fore.RED + 'Error: Invalid file extension.')
+        return

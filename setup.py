@@ -6,23 +6,23 @@ from setuptools import setup
 setup(
     name='dummy',
     version='0.0.1',
-    description='Create a dummy file of the specified size.',
+    description='Create a dummy file for testing.',
     author='Taichi Kotake',
     packages=['dummy'],
     entry_points={
         'console_scripts': [
-            'dummy' = 'dummy.cli:parse_args',
-        ],
+            'dummy=dummy.cli:parse_args'
+        ]
     },
     install_requires=[
         'colorama',
         'Pillow',
-        'pypdf'
+        'reportlab'
     ],
     license='MIT',
     classifiers=[
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3'
     ],
 )
