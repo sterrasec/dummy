@@ -6,7 +6,7 @@ import binascii
 import colorama
 import io
 
-from colorama import Fore, Back, Style
+from colorama import Fore
 from PIL import Image, ImageDraw, ImageFont
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import B5
@@ -76,22 +76,26 @@ def parse_bytes(byte_str):
     elif byte_str.endswith(('GB', 'Gb', 'gB', 'gb')):
         return int(byte_str[:-2]) * 1024 * 1024 * 1024
     else:
-        return int(byte_str)
+        try:
+            return int(byte_str)
+        except ValueError:
+            print(Fore.RED + 'Error: Invalid byte size.')
+            return None
 
 def parse_args():
     colorama.init(autoreset=True)
     parser = argparse.ArgumentParser(description='Create a dummy file for testing.')
-    parser.add_argument('-n', '--name', help='File name(.jpeg, .png, .pdf)', required=True)
+    parser.add_argument('file_path', help='Path to the generated file(.jpeg, .png, .pdf)')
     parser.add_argument('-t', '--text', help='Text to be written in the file', default='dummy file')
     parser.add_argument('-b', '--bytes', help='Bytes of file(.png only)')
 
     args = parser.parse_args()
-    if args.name.endswith('.jpeg'):
-        make_jpeg(args.name, args.text)
-    elif args.name.endswith('.png'):
-        make_png(args.name, args.text, parse_bytes(args.bytes))
-    elif args.name.endswith('.pdf'):
-        make_pdf(args.name, args.text)
+    if args.file_path.endswith('.jpeg') or args.file_path.endswith('.jpg'):
+        make_jpeg(args.file_path, args.text)
+    elif args.file_path.endswith('.png'):
+        make_png(args.file_path, args.text, parse_bytes(args.bytes))
+    elif args.file_path.endswith('.pdf'):
+        make_pdf(args.file_path, args.text)
     else:
         print(Fore.RED + 'Error: Invalid file extension.')
-        return
+
