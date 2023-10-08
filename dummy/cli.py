@@ -17,6 +17,7 @@ def make_jpeg(file_path, text):
     draw = ImageDraw.Draw(image)
     draw.text((10, 10), text, fill=(0, 0, 0)) # Black
     image.save(file_path, format='jpeg')
+    return True
 
 def make_png(file_path, text, byte_size):
     image = Image.new('RGB', (729, 516), (255, 255, 255)) # B5, White
@@ -62,6 +63,7 @@ def make_pdf(file_path, text):
     c.drawString(15, 40, text)
     c.showPage()
     c.save()
+    return True
 
 def parse_bytes(byte_str):
     if byte_str == None:
@@ -92,10 +94,18 @@ def parse_args():
     args = parser.parse_args()
     if args.file_path.endswith('.jpeg') or args.file_path.endswith('.jpg'):
         make_jpeg(args.file_path, args.text)
+        print(Fore.GREEN + 'Successfully generated' + args.file_path)
+
     elif args.file_path.endswith('.png'):
-        make_png(args.file_path, args.text, parse_bytes(args.bytes))
+        if make_png(args.file_path, args.text, parse_bytes(args.bytes)):
+            print(Fore.GREEN + 'Successfully generated' + args.file_path)
+        else:
+            print(Fore.RED + 'Failed to generate file.')
+
     elif args.file_path.endswith('.pdf'):
         make_pdf(args.file_path, args.text)
+        print(Fore.GREEN + 'Successfully generated' + args.file_path)
+
     else:
         print(Fore.RED + 'Error: Invalid file extension.')
 
