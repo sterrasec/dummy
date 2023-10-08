@@ -15,14 +15,20 @@ from reportlab.lib.pagesizes import B5
 def make_jpeg(file_path, text):
     image = Image.new('RGB', (729, 516), (255, 255, 255)) # B5, White
     draw = ImageDraw.Draw(image)
-    draw.text((10, 10), text, fill=(0, 0, 0)) # Black
+    # Pillow's builtin font has a static size, so I used Arial
+    # https://github.com/python-pillow/Pillow/issues/2695
+    arial = ImageFont.truetype('Arial.ttf', 30)
+    draw.text((10, 10), text, fill=(0, 0, 0), font=arial) # Black
     image.save(file_path, format='jpeg')
     return True
 
 def make_png(file_path, text, byte_size):
     image = Image.new('RGB', (729, 516), (255, 255, 255)) # B5, White
     draw = ImageDraw.Draw(image)
-    draw.text((10, 10), text, fill=(0, 0, 0)) # Black
+    # Pillow's builtin font has a static size, so I used Arial
+    # https://github.com/python-pillow/Pillow/issues/2695
+    arial = ImageFont.truetype('Arial.ttf', 30)
+    draw.text((10, 10), text, fill=(0, 0, 0), font=arial) # Black
     output = io.BytesIO()
     image.save(output, format='png')
     png_data = output.getvalue()
@@ -30,7 +36,7 @@ def make_png(file_path, text, byte_size):
     if (byte_size == None) or (len(png_data) > byte_size):
         with open(file_path, 'wb') as f:
             f.write(png_data)
-        return False
+        return True
 
     # IEND chunk is the last chunk of a PNG file
     iend_type_index = png_data.find(b'IEND')
@@ -69,14 +75,14 @@ def parse_bytes(byte_str):
     if byte_str == None:
         return None
 
-    if byte_str.endswith(('B', 'b')):
-        return int(byte_str[:-1])
-    elif byte_str.endswith(('KB', 'Kb', 'kB', 'kb')):
+    if byte_str.endswith(('KB', 'Kb', 'kB', 'kb')):
         return int(byte_str[:-2]) * 1024
     elif byte_str.endswith(('MB', 'Mb', 'mB', 'mb')):
         return int(byte_str[:-2]) * 1024 * 1024
     elif byte_str.endswith(('GB', 'Gb', 'gB', 'gb')):
         return int(byte_str[:-2]) * 1024 * 1024 * 1024
+    elif byte_str.endswith(('B', 'b')):
+        return int(byte_str[:-1])
     else:
         try:
             return int(byte_str)
@@ -92,20 +98,23 @@ def parse_args():
     parser.add_argument('-b', '--bytes', help='Bytes of file(.png only)')
 
     args = parser.parse_args()
+    if args.bytes is not None and not args.file_path.endswith('.png'):
+        print(Fore.RED + 'Error: -b option is only available for .png.')
+        return
+
     if args.file_path.endswith('.jpeg') or args.file_path.endswith('.jpg'):
         make_jpeg(args.file_path, args.text)
-        print(Fore.GREEN + 'Successfully generated' + args.file_path)
+        print(Fore.GREEN + 'Successfully generated: ' + args.file_path)
 
     elif args.file_path.endswith('.png'):
         if make_png(args.file_path, args.text, parse_bytes(args.bytes)):
-            print(Fore.GREEN + 'Successfully generated' + args.file_path)
+            print(Fore.GREEN + 'Successfully generated: ' + args.file_path)
         else:
-            print(Fore.RED + 'Failed to generate file.')
+            print(Fore.RED + 'Failed to generate file...')
 
     elif args.file_path.endswith('.pdf'):
         make_pdf(args.file_path, args.text)
-        print(Fore.GREEN + 'Successfully generated' + args.file_path)
+        print(Fore.GREEN + 'Successfully generated: ' + args.file_path)
 
     else:
         print(Fore.RED + 'Error: Invalid file extension.')
-
