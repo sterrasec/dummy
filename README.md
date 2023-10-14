@@ -3,6 +3,10 @@
 
 Generator of static files for testing file upload functionality.
 
+When generating a png, as in the following screenshot, you can generate a png of a specified size.
+
+<img src="screenshots/demo.png">
+
 ## Motivation
 I often test the file upload function during security testing. 
 I am always at a loss as to what kind of images to upload at that time. 
@@ -29,8 +33,8 @@ By default, the generated file is written "dummy file". This text can be changed
 $ dummy test.jpeg
 ```
 
-You can also specify the number of bytes in the file when generating png files with the `-t` option.
-
+You can also specify the number of bytes in the file when generating png files with the `-b` option.
+To specify bytes, you can use B, KB, MB, or GB as a unit.
 
 ```bash
 $ dummy -t abc -b 1MB test.png
