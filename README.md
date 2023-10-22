@@ -1,5 +1,6 @@
 # dummy
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/sterrasec/dummy/blob/master/LICENSE)
+![typos workflow](https://github.com/sterrasec/dummy/actions/workflows/typos.yml/badge.svg)
 
 Generator of static files for testing file upload functionality.
 
