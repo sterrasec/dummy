@@ -5,19 +5,26 @@ import argparse
 import binascii
 import colorama
 import io
+import platform
 
 from colorama import Fore
 from PIL import Image, ImageDraw, ImageFont
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import B5
 
+system = platform.system()
 
 def make_jpeg(file_path, text):
     image = Image.new('RGB', (729, 516), (255, 255, 255)) # B5, White
     draw = ImageDraw.Draw(image)
     # Pillow's builtin font has a static size, so I used Arial
     # https://github.com/python-pillow/Pillow/issues/2695
-    arial = ImageFont.truetype('Arial.ttf', 30)
+
+    if system == 'Windows':
+        font_path = 'C:/Windows/Fonts/arial.ttf'
+    else:
+        font_path = 'Arial.ttf'
+    arial = ImageFont.truetype(font_path, 30)
     draw.text((10, 10), text, fill=(0, 0, 0), font=arial) # Black
     image.save(file_path, format='jpeg')
     return True
@@ -27,7 +34,13 @@ def make_png(file_path, text, byte_size):
     draw = ImageDraw.Draw(image)
     # Pillow's builtin font has a static size, so I used Arial
     # https://github.com/python-pillow/Pillow/issues/2695
-    arial = ImageFont.truetype('Arial.ttf', 30)
+
+    system = platform.system()
+    if system == 'Windows':
+        font_path = 'C:/Windows/Fonts/arial.ttf'
+    else:
+        font_path = 'Arial.ttf'
+    arial = ImageFont.truetype(font_path, 30)
     draw.text((10, 10), text, fill=(0, 0, 0), font=arial) # Black
     output = io.BytesIO()
     image.save(output, format='png')
