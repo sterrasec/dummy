@@ -23,7 +23,7 @@ def make_jpeg(file_path, text):
     if system == 'Windows':
         font_path = 'C:\\Windows\\Fonts\\arial.ttf'
     else:
-        font_path = 'Aria.ttf'
+        font_path = 'Arial.ttf'
     arial = ImageFont.truetype(font_path, 30)
     draw.text((10, 10), text, fill=(0, 0, 0), font=arial) # Black
     image.save(file_path, format='jpeg')
@@ -39,7 +39,7 @@ def make_png(file_path, text, byte_size):
     if system == 'Windows':
         font_path = 'C:\\Windows\\Fonts\\arial.ttf'
     else:
-        font_path = 'Aria.ttf'
+        font_path = 'Arial.ttf'
     arial = ImageFont.truetype(font_path, 30)
     draw.text((10, 10), text, fill=(0, 0, 0), font=arial) # Black
     output = io.BytesIO()
