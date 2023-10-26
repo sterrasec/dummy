@@ -21,7 +21,7 @@ def make_jpeg(file_path, text):
     # https://github.com/python-pillow/Pillow/issues/2695
 
     if system == 'Windows':
-        font_path = 'C:\\Windows\\Fonts\\arial.ttf'
+        font_path = 'C:/Windows/Fonts/arial.ttf'
     else:
         font_path = 'Arial.ttf'
     arial = ImageFont.truetype(font_path, 30)
@@ -37,7 +37,7 @@ def make_png(file_path, text, byte_size):
 
     system = platform.system()
     if system == 'Windows':
-        font_path = 'C:\\Windows\\Fonts\\arial.ttf'
+        font_path = 'C:/Windows/Fonts/arial.ttf'
     else:
         font_path = 'Arial.ttf'
     arial = ImageFont.truetype(font_path, 30)
