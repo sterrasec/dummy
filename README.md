@@ -20,6 +20,7 @@ To solve this, `dummy` has the ability to generate a png of any size by adding a
 ## Installation
 
 Since `dummy` is implemented in Python, it can be installed with the pip command, which is a Python package management system.
+On Windows, the following pip command must be executed as administrator to generate `dummy.exe`.
 
 ```bash
 $ pip install git+ssh://git@github.com/sterrasec/dummy.git
