@@ -35,14 +35,14 @@ $ pip install git+ssh://git@github.com/sterrasec/dummy.git
 
 ## Usage
 The command outputs are displayed in color. 
-Just specify the file path for png, jpeg, or pdf and the file will be generated. 
+Just specify the file path for csv, png, jpeg, or pdf and the file will be generated. 
 By default, the generated file is written "dummy file". This text can be changed with the `-t` option.
 
 ```bash
 $ dummy test.jpeg
 ```
 
-You can also specify the number of bytes in the file when generating png files with the `-b` option.
+You can also specify the number of bytes in the file when generating csv and png files with the `-b` option.
 To specify bytes, you can use B, KB, MB, or GB as a unit.
 
 ```bash
@@ -58,13 +58,13 @@ usage: dummy [-h] [-t TEXT] [-b BYTES] file_path
 Create a dummy file for testing.
 
 positional arguments:
-  file_path             Path to the generated file(.jpeg, .png, .pdf)
+  file_path             Path to the generated file(.csv .jpeg, .png, .pdf)
 
 options:
   -h, --help            show this help message and exit
-  -t TEXT, --text TEXT  Text to be written in the file
+  -t TEXT, --text TEXT  Text to be written in the file(Disabled in csv)
   -b BYTES, --bytes BYTES
-                        Bytes of file(.png only)
+                        Bytes of file(.png, .csv)
 ```
 
 ## License
