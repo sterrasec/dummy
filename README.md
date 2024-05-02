@@ -30,7 +30,7 @@ Since `dummy` is implemented in Python, it can be installed with the pip command
 On Windows, the following pip command must be executed as administrator to generate `dummy.exe`.
 
 ```bash
-$ pip install git+ssh://git@github.com/sterrasec/dummy.git
+$ pip install git+https://github.com/sterrasec/dummy.git
 ```
 
 ## Usage
