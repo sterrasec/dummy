@@ -5,6 +5,7 @@ import argparse
 import binascii
 import colorama
 import io
+import os
 import platform
 
 from colorama import Fore
@@ -13,6 +14,26 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import B5
 
 system = platform.system()
+
+def make_csv(file_path, byte_size):
+    header = 'Number\n'
+    worksheet_function1 = '=3+5\n'
+    number = '6\n'
+    worksheet_function2 = '=SUM(A2:A3)\n' # 14
+    template_length = len(header + worksheet_function1 + number + worksheet_function2)
+    with open(file_path, 'w') as f:
+        # Write the template
+        f.write(header)
+        f.write(worksheet_function1)
+        f.write(number)
+        f.write(worksheet_function2)
+
+        if (byte_size == None) or (template_length > byte_size):
+            return True
+
+        for i in range(template_length, byte_size, 2):
+            f.write('0\n')
+    return True
 
 def make_jpeg(file_path, text):
     image = Image.new('RGB', (729, 516), (255, 255, 255)) # B5, White
@@ -106,16 +127,27 @@ def parse_bytes(byte_str):
 def parse_args():
     colorama.init(autoreset=True)
     parser = argparse.ArgumentParser(description='Create a dummy file for testing.')
-    parser.add_argument('file_path', help='Path to the generated file(.jpeg, .png, .pdf)')
-    parser.add_argument('-t', '--text', help='Text to be written in the file', default='dummy file')
-    parser.add_argument('-b', '--bytes', help='Bytes of file(.png only)')
+    parser.add_argument('file_path', help='Path to the generated file(.csv .jpeg, .png, .pdf)')
+    parser.add_argument('-t', '--text', help='Text to be written in the file(Disabled in csv)', default='dummy file')
+    parser.add_argument('-b', '--bytes', help='Bytes of file(.png, .csv)')
 
     args = parser.parse_args()
-    if args.bytes is not None and not args.file_path.endswith('.png'):
-        print(Fore.RED + 'Error: -b option is only available for .png.')
+    if args.bytes is not None and not args.file_path.endswith('.png') and not args.file_path.endswith('.csv'):
+        print(Fore.RED + 'Error: -b option is only available for .png or .csv files.')
         return
+    
+    # If the directory specified in path does not exist
+    if args.file_path.rfind('/') != -1:
+        dir_path = args.file_path[:args.file_path.rfind('/')]
+        if not os.path.exists(dir_path):
+            print(Fore.RED + 'Error: The specified directory does not exist.')
+            return
+    
+    if args.file_path.endswith('.csv'):
+        make_csv(args.file_path, parse_bytes(args.bytes))
+        print(Fore.GREEN + 'Successfully generated: ' + args.file_path)
 
-    if args.file_path.endswith('.jpeg') or args.file_path.endswith('.jpg'):
+    elif args.file_path.endswith('.jpeg') or args.file_path.endswith('.jpg'):
         make_jpeg(args.file_path, args.text)
         print(Fore.GREEN + 'Successfully generated: ' + args.file_path)
 

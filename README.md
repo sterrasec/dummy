@@ -4,6 +4,13 @@
 
 Generator of static files for testing file upload functionality.
 
+Supported file types:
+- csv
+  - For checking if the worksheet function works
+- jpeg
+- png
+- pdf
+
 When generating a png, as in the following screenshot, you can generate a png of a specified size.
 
 <img src="screenshots/demo.png">
