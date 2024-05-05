@@ -11,9 +11,11 @@ Supported file types:
 - png
 - pdf
 
+<img src="screenshots/csv-demo.png">
+
 When generating a png, as in the following screenshot, you can generate a png of a specified size.
 
-<img src="screenshots/demo.png">
+<img src="screenshots/png-demo.png">
 
 ## Motivation
 I often test the file upload function during security testing. 
