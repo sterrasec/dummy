@@ -5,6 +5,8 @@
 Generator of static files for testing file upload functionality.
 
 Supported file types:
+- EICAR test file
+  - For checking if the antivirus software works
 - csv
   - For checking if the worksheet function works
 - jpeg
@@ -51,22 +53,29 @@ To specify bytes, you can use B, KB, MB, or GB as a unit.
 $ dummy -t abc -b 1MB test.png
 ```
 
+To generate an EICAR test file, include `eicar` as part of the file name.
+  
+```bash
+$ dummy eicar.com
+```
+
 You can check your options at any time by checking help.
 
 ```bash
 $ dummy -h
-usage: dummy [-h] [-t TEXT] [-b BYTES] file_path
+usage: dummy [-h] [-t TEXT] [-b BYTES] [-v] file_path
 
 Create a dummy file for testing.
 
 positional arguments:
-  file_path             Path to the generated file(.csv .jpeg, .png, .pdf)
+  file_path             Path to the generated file(.csv .jpeg, .png, .pdf, EICAR)
 
 options:
   -h, --help            show this help message and exit
   -t TEXT, --text TEXT  Text to be written in the file(Disabled in csv)
   -b BYTES, --bytes BYTES
                         Bytes of file(.png, .csv)
+  -v, --version         Print version
 ```
 
 ## License

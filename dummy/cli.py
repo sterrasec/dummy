@@ -3,11 +3,13 @@
 
 import argparse
 import binascii
+import codecs
 import colorama
 import io
 import os
 import platform
 
+from dummy import __version__
 from colorama import Fore
 from PIL import Image, ImageDraw, ImageFont
 from reportlab.pdfgen import canvas
@@ -33,6 +35,14 @@ def make_csv(file_path, byte_size):
 
         for i in range(template_length, byte_size, 2):
             f.write('0\n')
+    return True
+
+def make_eicar(file_path):
+    # Avoid scanners will detect the EICAR test file as a virus
+    rot13_eicar_bytes = 'K5B!C%@NC[4\\CMK54(C^)7PP)7}$RVPNE-FGNAQNEQ-NAGVIVEHF-GRFG-SVYR!$U+U*'
+    with open(file_path, 'w') as f:
+        f.write(codecs.encode(rot13_eicar_bytes, "rot_13"))
+
     return True
 
 def make_jpeg(file_path, text):
@@ -127,9 +137,10 @@ def parse_bytes(byte_str):
 def parse_args():
     colorama.init(autoreset=True)
     parser = argparse.ArgumentParser(description='Create a dummy file for testing.')
-    parser.add_argument('file_path', help='Path to the generated file(.csv .jpeg, .png, .pdf)')
+    parser.add_argument('file_path', help='Path to the generated file(.csv .jpeg, .png, .pdf, EICAR)')
     parser.add_argument('-t', '--text', help='Text to be written in the file(Disabled in csv)', default='dummy file')
     parser.add_argument('-b', '--bytes', help='Bytes of file(.png, .csv)')
+    parser.add_argument('-v', '--version', help='Print version', action='version', version=__version__)
 
     args = parser.parse_args()
     if args.bytes is not None and not args.file_path.endswith('.png') and not args.file_path.endswith('.csv'):
@@ -142,8 +153,12 @@ def parse_args():
         if not os.path.exists(dir_path):
             print(Fore.RED + 'Error: The specified directory does not exist.')
             return
-    
-    if args.file_path.endswith('.csv'):
+
+    if 'eicar' in args.file_path or 'EICAR' in args.file_path:
+        make_eicar(args.file_path)
+        print(Fore.GREEN + 'Successfully generated: ' + args.file_path)
+
+    elif args.file_path.endswith('.csv'):
         make_csv(args.file_path, parse_bytes(args.bytes))
         print(Fore.GREEN + 'Successfully generated: ' + args.file_path)
 
