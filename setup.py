@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name='dummy',
-    version='0.2.0',
+    version='0.2.1',
     description='Create a dummy file for testing.',
     author='Taichi Kotake',
     packages=['dummy'],
