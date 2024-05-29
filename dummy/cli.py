@@ -137,7 +137,7 @@ def parse_bytes(byte_str):
 def parse_args():
     colorama.init(autoreset=True)
     parser = argparse.ArgumentParser(description='Create a dummy file for testing.')
-    parser.add_argument('file_path', help='Path to the generated file(.csv .jpeg, .png, .pdf)')
+    parser.add_argument('file_path', help='Path to the generated file(.csv .jpeg, .png, .pdf, EICAR)')
     parser.add_argument('-t', '--text', help='Text to be written in the file(Disabled in csv)', default='dummy file')
     parser.add_argument('-b', '--bytes', help='Bytes of file(.png, .csv)')
     parser.add_argument('-v', '--version', help='Print version', action='version', version=__version__)
@@ -154,7 +154,7 @@ def parse_args():
             print(Fore.RED + 'Error: The specified directory does not exist.')
             return
 
-    if 'eicar' in args.file_path:
+    if 'eicar' in args.file_path or 'EICAR' in args.file_path:
         make_eicar(args.file_path)
         print(Fore.GREEN + 'Successfully generated: ' + args.file_path)
 
