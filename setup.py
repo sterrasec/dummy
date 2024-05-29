@@ -2,10 +2,11 @@
 # coding: UTF-8
 
 from setuptools import setup
+from dummy import __version__
 
 setup(
     name='dummy',
-    version='0.2.1',
+    version=__version__,
     description='Create a dummy file for testing.',
     author='Taichi Kotake',
     packages=['dummy'],

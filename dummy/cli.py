@@ -9,6 +9,7 @@ import io
 import os
 import platform
 
+from dummy import __version__
 from colorama import Fore
 from PIL import Image, ImageDraw, ImageFont
 from reportlab.pdfgen import canvas
@@ -139,7 +140,7 @@ def parse_args():
     parser.add_argument('file_path', help='Path to the generated file(.csv .jpeg, .png, .pdf)')
     parser.add_argument('-t', '--text', help='Text to be written in the file(Disabled in csv)', default='dummy file')
     parser.add_argument('-b', '--bytes', help='Bytes of file(.png, .csv)')
-    # parser.add_argument('-v', '--version', help='Print version', action='version', version='%(prog)s ' + __version__)
+    parser.add_argument('-v', '--version', help='Print version', action='version', version=__version__)
 
     args = parser.parse_args()
     if args.bytes is not None and not args.file_path.endswith('.png') and not args.file_path.endswith('.csv'):
